@@ -15,14 +15,23 @@ public class SnakeGame extends ApplicationAdapter {
 	ShapeRenderer shape;
 	int grid_col;
 	int grid_row;
+	int width;
+	int height;
+	float cellWidth;
+	float cellHeight;
+
+	public SnakeGame(int width, int height) {
+		this.width = width;
+		this.height = height;
+		this.grid_col = 30;
+		this.grid_row = 30;
+		this.cellWidth = (float) this.width / this.grid_col;
+		this.cellHeight = (float) this.height / this.grid_col;
+	}
 
 	@Override
 	public void create () {
-		batch = new SpriteBatch();
-		img = new Texture("badlogic.jpg");
 		shape = new ShapeRenderer();
-		grid_col = 30;
-		grid_row = 30;
 	}
 
 	@Override
@@ -31,21 +40,19 @@ public class SnakeGame extends ApplicationAdapter {
 
 		for (int i = 0; i <= grid_col; i++) {
 			shape.begin(ShapeType.Line);
-			shape.setColor(1, 1, 1, 1);
-			shape.line(50 * i, 0, 50 * i, 500);
+			shape.setColor(0.1F, 0.1F, 0.1F, 1);
+			shape.line(this.cellWidth * i, 0,  this.cellWidth * i, this.height);
 			shape.end();
 		}
-		for (int i = 0; i <= grid_col; i++) {
+		for (int i = 0; i <= grid_row; i++) {
 			shape.begin(ShapeType.Line);
-			shape.setColor(1, 1, 1, 1);
-			shape.line(0, 50 * i, 500, 50 * i);
+			shape.setColor(0.1F, 0.1F, 0.1F, 1);
+			shape.line(0, this.cellHeight * i, this.width, this.cellHeight * i);
 			shape.end();
 		}
 	}
 	
 	@Override
 	public void dispose () {
-		batch.dispose();
-		img.dispose();
 	}
 }
