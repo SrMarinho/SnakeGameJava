@@ -1,24 +1,33 @@
 package com.snake.game;
 
 import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.InputAdapter;
+import com.snake.game.entities.Scene;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class SnakeGame extends ApplicationAdapter {
 	SpriteBatch batch;
 	Texture img;
 	ShapeRenderer shape;
-	int grid_col;
-	int grid_row;
-	int width;
-	int height;
-	float cellWidth;
-	float cellHeight;
+	public int grid_col;
+	public int grid_row;
+	public int width;
+	public int height;
+	public float cellWidth;
+	public float cellHeight;
+	Scene scene;
+	Boolean running;
 
 	public SnakeGame(int width, int height) {
 		this.width = width;
@@ -26,7 +35,9 @@ public class SnakeGame extends ApplicationAdapter {
 		this.grid_col = 30;
 		this.grid_row = 30;
 		this.cellWidth = (float) this.width / this.grid_col;
-		this.cellHeight = (float) this.height / this.grid_col;
+		this.cellHeight = (float) this.height / this.grid_row;
+		this.scene = new Scene(this);
+		this.running = true;
 	}
 
 	@Override
@@ -36,20 +47,13 @@ public class SnakeGame extends ApplicationAdapter {
 
 	@Override
 	public void render () {
-		ScreenUtils.clear(0, 0, 0, 1);
+		ScreenUtils.clear((float) 20 /255, (float) 20 /255, (float) 20 /255, 1);
 
-		for (int i = 0; i <= grid_col; i++) {
-			shape.begin(ShapeType.Line);
-			shape.setColor(0.1F, 0.1F, 0.1F, 1);
-			shape.line(this.cellWidth * i, 0,  this.cellWidth * i, this.height);
-			shape.end();
+		scene.event();
+		if (this.running) {
+			scene.update();
 		}
-		for (int i = 0; i <= grid_row; i++) {
-			shape.begin(ShapeType.Line);
-			shape.setColor(0.1F, 0.1F, 0.1F, 1);
-			shape.line(0, this.cellHeight * i, this.width, this.cellHeight * i);
-			shape.end();
-		}
+        scene.render(shape);
 	}
 	
 	@Override
