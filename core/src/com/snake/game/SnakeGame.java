@@ -11,6 +11,8 @@ import com.badlogic.gdx.InputAdapter;
 import com.snake.game.entities.Scene;
 
 import java.awt.*;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
@@ -28,6 +30,8 @@ public class SnakeGame extends ApplicationAdapter {
 	public Scene scene;
 	public Boolean running;
 	public int score;
+	float move_time;
+	Instant last_move_time;
 
 	public SnakeGame(int width, int height) {
 		this.width = width;
@@ -39,11 +43,14 @@ public class SnakeGame extends ApplicationAdapter {
 		this.scene = new Scene(this);
 		this.running = true;
 		this.score = 0;
+		this.move_time = 50F;
+		this.last_move_time = Instant.now() ;
 	}
 
 	@Override
 	public void create () {
 		shape = new ShapeRenderer();
+		Instant last_move_time = Instant.now() ;
 	}
 
 	@Override
@@ -53,7 +60,6 @@ public class SnakeGame extends ApplicationAdapter {
 				this.scene = new Scene(this);
 				this.score = 0;
 				this.running = true;
-				System.out.println("aqui");
 			}
 		}
 
@@ -61,8 +67,14 @@ public class SnakeGame extends ApplicationAdapter {
 
 		scene.event();
 		if (this.running) {
-			scene.update();
+			Instant current_time = Instant.now();
+			Duration duration = Duration.between(this.last_move_time, current_time);
+			if (duration.toMillis() > this.move_time) {
+				scene.update();
+				this.last_move_time = current_time;
+			}
 		}
+
         scene.render(shape);
 	}
 	
@@ -70,10 +82,7 @@ public class SnakeGame extends ApplicationAdapter {
 	public void dispose () {
 	}
 
-	public boolean collision(Float x1, Float y1, Float w1, Float h1, Float x2, Float y2, Float w2, Float h2) {
-		return x1 < x2 + w2 &&
-				x1 + w1 > x2 &&
-				y1 < y2 + h2 &&
-				y1 + h1 > y2;
+	public boolean collision(int x1, int y1, int x2, int y2) {
+		return x1 == x2 && y1 == y2;
 	}
 }

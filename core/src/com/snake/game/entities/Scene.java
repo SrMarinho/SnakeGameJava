@@ -20,17 +20,14 @@ public class Scene {
 
         objs = new ArrayList<>();
 
-        objs.add(new Background(this.game, 0, 0));
-
         Snake snake = new Snake(this.game);
         objs.add(snake);
 
-        this.apple = new Apple(this.game,
-                        new Random().nextInt(0, this.game.grid_col) * this.game.cellWidth,
-                        new Random().nextInt(0, this.game.grid_row) * this.game.cellHeight
-                    );
+        this.apple = new Apple(this.game);
+        this.apple.randPos(snake);
         objs.add(apple);
 
+        objs.add(new Background(this.game, 0, 0));
     }
 
     public void event() {

@@ -10,9 +10,10 @@ public class DesktopLauncher {
 		int width = 500;
 		int height = 500;
 		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
-		config.setForegroundFPS(15);
+		config.setForegroundFPS(60);
 		config.setTitle("SnakeGame");
 		config.setWindowedMode(width, height);
+		config.setWindowPosition(2160, (1280 / 2) - (height / 2));
 		new Lwjgl3Application(new SnakeGame(width, height), config);
 	}
 }
