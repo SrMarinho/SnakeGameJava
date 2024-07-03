@@ -1,13 +1,11 @@
 package com.snake.game;
 
-import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputAdapter;
 import com.snake.game.entities.Scene;
@@ -15,6 +13,7 @@ import com.snake.game.entities.Scene;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Objects;
 
 public class SnakeGame extends ApplicationAdapter {
 	SpriteBatch batch;
@@ -26,8 +25,9 @@ public class SnakeGame extends ApplicationAdapter {
 	public int height;
 	public float cellWidth;
 	public float cellHeight;
-	Scene scene;
-	Boolean running;
+	public Scene scene;
+	public Boolean running;
+	public int score;
 
 	public SnakeGame(int width, int height) {
 		this.width = width;
@@ -38,6 +38,7 @@ public class SnakeGame extends ApplicationAdapter {
 		this.cellHeight = (float) this.height / this.grid_row;
 		this.scene = new Scene(this);
 		this.running = true;
+		this.score = 0;
 	}
 
 	@Override
@@ -47,6 +48,15 @@ public class SnakeGame extends ApplicationAdapter {
 
 	@Override
 	public void render () {
+		if(Gdx.input.isKeyPressed(Keys.SPACE)) {
+			if (!this.running) {
+				this.scene = new Scene(this);
+				this.score = 0;
+				this.running = true;
+				System.out.println("aqui");
+			}
+		}
+
 		ScreenUtils.clear((float) 20 /255, (float) 20 /255, (float) 20 /255, 1);
 
 		scene.event();
@@ -58,5 +68,12 @@ public class SnakeGame extends ApplicationAdapter {
 	
 	@Override
 	public void dispose () {
+	}
+
+	public boolean collision(Float x1, Float y1, Float w1, Float h1, Float x2, Float y2, Float w2, Float h2) {
+		return x1 < x2 + w2 &&
+				x1 + w1 > x2 &&
+				y1 < y2 + h2 &&
+				y1 + h1 > y2;
 	}
 }

@@ -79,6 +79,41 @@ public class Snake implements Renderizable  {
 
     @Override
     public void update() {
+        boolean colisionSnakeAndApple =  this.game.collision(
+                (float)this.body.get(0).get(0),
+                (float)this.body.get(0).get(1),
+                this.game.cellWidth,
+                this.game.cellHeight,
+                this.game.scene.apple.x,
+                this.game.scene.apple.y,
+                this.game.cellWidth,
+                this.game.cellHeight
+        );
+
+        if (colisionSnakeAndApple) {
+            this.game.score += 1;
+            this.game.scene.apple.x = new Random().nextInt(0, this.game.grid_col) * this.game.cellWidth;
+            this.game.scene.apple.y = new Random().nextInt(0, this.game.grid_row) * this.game.cellHeight;
+            System.out.println(this.game.score);
+            List<Float> lastPart = body.getLast();
+            body.add(Arrays.asList(lastPart.get(0), lastPart.get(1)));
+        }
+
+        boolean colisionSnakeAndWall = this.game.collision(
+                (float)this.body.get(0).get(0),
+                (float)this.body.get(0).get(1),
+                this.game.cellWidth,
+                this.game.cellHeight,
+                0F,
+                0F,
+                (float)this.game.width,
+                (float)this.game.height
+        );
+
+        if (!colisionSnakeAndWall) {
+            this.game.running = false;
+        }
+
         for (int i = body.size() - 1; i > 0; i--) {
             List<Float> current = body.get(i);
             List<Float> previous = body.get(i - 1);

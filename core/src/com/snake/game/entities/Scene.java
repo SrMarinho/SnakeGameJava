@@ -1,13 +1,10 @@
 package com.snake.game.entities;
 
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.snake.game.entities.Renderizable;
-import com.snake.game.entities.Snake;
-import com.snake.game.entities.Background;
+import com.badlogic.gdx.Gdx;
 import com.snake.game.SnakeGame;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -16,6 +13,7 @@ public class Scene {
     Snake snake;
     SnakeGame game;
     Background bg;
+    Apple apple;
 
     public Scene(SnakeGame game) {
         this.game = game;
@@ -24,13 +22,14 @@ public class Scene {
 
         objs.add(new Background(this.game, 0, 0));
 
-        objs.add(new Snake(game));
+        Snake snake = new Snake(this.game);
+        objs.add(snake);
 
-        objs.add(new Apple(this.game,
-                    new Random().nextInt(0, this.game.grid_col) * this.game.cellWidth,
-                    new Random().nextInt(0, this.game.grid_row) * this.game.cellHeight
-                )
-        );
+        this.apple = new Apple(this.game,
+                        new Random().nextInt(0, this.game.grid_col) * this.game.cellWidth,
+                        new Random().nextInt(0, this.game.grid_row) * this.game.cellHeight
+                    );
+        objs.add(apple);
 
     }
 
@@ -41,6 +40,7 @@ public class Scene {
     }
 
     public void update() {
+        Gdx.graphics.setTitle("Score: " + this.game.score);
         for (Renderizable obj : objs) {
             obj.update();
         }
