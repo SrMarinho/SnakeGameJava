@@ -13,7 +13,7 @@ public class DesktopLauncher {
 		config.setForegroundFPS(60);
 		config.setTitle("SnakeGame");
 		config.setWindowedMode(width, height);
-		config.setWindowPosition(2160, (1280 / 2) - (height / 2));
+//		config.setWindowPosition(2160, (1280 / 2) - (height / 2));
 		new Lwjgl3Application(new SnakeGame(width, height), config);
 	}
 }
